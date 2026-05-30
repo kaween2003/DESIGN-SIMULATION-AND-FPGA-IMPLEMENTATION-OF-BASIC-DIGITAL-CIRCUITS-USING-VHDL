@@ -1,0 +1,82 @@
+----------------------------------------------------------------------------------
+-- Company: 
+-- Engineer: 
+-- 
+-- Create Date:    11:14:10 05/29/2026 
+-- Design Name: 
+-- Module Name:    D_flip_flop - Behavioral 
+-- Project Name: 
+-- Target Devices: 
+-- Tool versions: 
+-- Description: 
+--
+-- Dependencies: 
+--
+-- Revision: 
+-- Revision 0.01 - File Created
+-- Additional Comments: 
+--
+----------------------------------------------------------------------------------
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+-- Uncomment the following library declaration if using
+-- arithmetic functions with Signed or Unsigned values
+--use IEEE.NUMERIC_STD.ALL;
+
+-- Uncomment the following library declaration if instantiating
+-- any Xilinx primitives in this code.
+--library UNISIM;
+--use UNISIM.VComponents.all;
+
+entity D_flip_flop is
+    Port ( D : in  STD_LOGIC;
+           CLK : in  STD_LOGIC;
+           Q : inout  STD_LOGIC;
+           Q1 : inout  STD_LOGIC);
+end D_flip_flop;
+
+architecture Behavioral of D_flip_flop is
+
+
+
+component NAND_1
+		Port ( A : in  STD_LOGIC;
+           B : in  STD_LOGIC;
+           C : inout  STD_LOGIC);
+end COMPONENT;
+component NAND_2
+		Port ( A : in  STD_LOGIC;
+           B : in  STD_LOGIC;
+           C : inout  STD_LOGIC);
+end COMPONENT;
+component NAND_3
+		Port ( A : in  STD_LOGIC;
+           B : in  STD_LOGIC;
+           C : inout  STD_LOGIC);
+end COMPONENT;
+component NAND_4
+		Port ( A : in  STD_LOGIC;
+           B : in  STD_LOGIC;
+           C : inout  STD_LOGIC);
+end COMPONENT;
+
+
+
+component NOT_1
+		    Port ( A : in  STD_LOGIC;
+           C : inout  STD_LOGIC);
+end COMPONENT;
+
+
+SIGNAL S1,S2,S3 : STD_LOGIC; 
+begin
+
+	U1 : NOT_1 PORT MAP (D,S1);
+	U2 : NAND_1 PORT MAP (D,CLK,S2);
+	U3 : NAND_2 PORT MAP (S1,CLK,S3);
+	U4 : NAND_3 PORT MAP (S2,Q1,Q);
+	U5 : NAND_4 PORT MAP (Q,S3,Q1);
+
+end Behavioral;
+

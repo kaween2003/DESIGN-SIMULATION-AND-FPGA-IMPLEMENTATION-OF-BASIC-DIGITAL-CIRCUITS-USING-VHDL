@@ -1,0 +1,133 @@
+--------------------------------------------------------------------------------
+-- Company: 
+-- Engineer:
+--
+-- Create Date:   17:34:40 05/29/2026
+-- Design Name:   
+-- Module Name:   /home/ise/Xilinx_Shared/LAB_1/T_ff/TB_COUNTER.vhd
+-- Project Name:  T_ff
+-- Target Device:  
+-- Tool versions:  
+-- Description:   
+-- 
+-- VHDL Test Bench Created by ISE for module: COUNTER
+-- 
+-- Dependencies:
+-- 
+-- Revision:
+-- Revision 0.01 - File Created
+-- Additional Comments:
+--
+-- Notes: 
+-- This testbench has been automatically generated using types std_logic and
+-- std_logic_vector for the ports of the unit under test.  Xilinx recommends
+-- that these types always be used for the top-level I/O of a design in order
+-- to guarantee that the testbench will bind correctly to the post-implementation 
+-- simulation model.
+--------------------------------------------------------------------------------
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+ 
+-- Uncomment the following library declaration if using
+-- arithmetic functions with Signed or Unsigned values
+--USE ieee.numeric_std.ALL;
+ 
+ENTITY TB_COUNTER IS
+END TB_COUNTER;
+ 
+ARCHITECTURE behavior OF TB_COUNTER IS 
+ 
+    -- Component Declaration for the Unit Under Test (UUT)
+ 
+    COMPONENT COUNTER
+    PORT(
+         T : IN  std_logic;
+         CLK : IN  std_logic;
+         CLR : IN  std_logic;
+         Q0 : INOUT  std_logic;
+         Q1 : INOUT  std_logic;
+         Q2 : INOUT  std_logic;
+         Q : OUT  std_logic
+        );
+    END COMPONENT;
+    
+
+   --Inputs
+   signal T : std_logic := '0';
+   signal CLK : std_logic := '0';
+   signal CLR : std_logic := '0';
+
+	--BiDirs
+   signal Q0 : std_logic;
+   signal Q1 : std_logic;
+   signal Q2 : std_logic;
+
+ 	--Outputs
+   signal Q : std_logic;
+
+   -- Clock period definitions
+   constant CLK_period : time := 10 ns;
+ 
+BEGIN
+ 
+	-- Instantiate the Unit Under Test (UUT)
+   uut: COUNTER PORT MAP (
+          T => T,
+          CLK => CLK,
+          CLR => CLR,
+          Q0 => Q0,
+          Q1 => Q1,
+          Q2 => Q2,
+          Q => Q
+        );
+
+   -- Clock process definitions
+   CLK_process :process
+   begin
+		CLK <= '0';
+		wait for CLK_period/2;
+		CLK <= '1';
+		wait for CLK_period/2;
+   end process;
+ 
+
+  -- Stimulus process
+   stim_proc: process
+   begin		
+
+      -- Reset counter
+      CLR <= '0';
+      T   <= '0';
+      wait for 20 ns;
+
+      -- Release reset
+      CLR <= '1';
+      wait for 10 ns;
+
+      -- Enable counter
+      -- Counter should count: 0000, 0001, 0010, 0011, 0100...
+      T <= '1';
+      wait for 160 ns;
+
+      -- Disable counter
+      -- Output should hold same value
+      T <= '0';
+      wait for 40 ns;
+
+      -- Enable again
+      T <= '1';
+      wait for 80 ns;
+
+      -- Reset again
+      CLR <= '0';
+      wait for 20 ns;
+
+      -- Release reset and stop
+      CLR <= '1';
+      T   <= '0';
+      wait for 40 ns;
+
+      wait;
+   end process;
+
+END;

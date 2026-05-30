@@ -1,0 +1,86 @@
+----------------------------------------------------------------------------------
+-- Company: 
+-- Engineer: 
+-- 
+-- Create Date:    05:03:43 05/29/2026 
+-- Design Name: 
+-- Module Name:    Full_Adder - Behavioral 
+-- Project Name: 
+-- Target Devices: 
+-- Tool versions: 
+-- Description: 
+--
+-- Dependencies: 
+--
+-- Revision: 
+-- Revision 0.01 - File Created
+-- Additional Comments: 
+--
+----------------------------------------------------------------------------------
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+-- Uncomment the following library declaration if using
+-- arithmetic functions with Signed or Unsigned values
+--use IEEE.NUMERIC_STD.ALL;
+
+-- Uncomment the following library declaration if instantiating
+-- any Xilinx primitives in this code.
+--library UNISIM;
+--use UNISIM.VComponents.all;
+
+entity Full_Adder is
+    Port ( A : in  STD_LOGIC;
+           B : in  STD_LOGIC;
+           Cin : in  STD_LOGIC;
+           P : inout  STD_LOGIC;
+           G : inout  STD_LOGIC;
+			  Q : inout  STD_LOGIC;
+           Cout : out  STD_LOGIC;
+			  Z : out STD_LOGIC );
+			  
+end Full_Adder;
+
+architecture Behavioral of Full_Adder is
+
+component AND_1
+		Port ( A : in  STD_LOGIC;
+           B : in  STD_LOGIC;
+           C : inout  STD_LOGIC);
+end COMPONENT;
+component AND_2
+		Port ( A : in  STD_LOGIC;
+           B : in  STD_LOGIC;
+           C : inout  STD_LOGIC);
+end COMPONENT;
+
+
+component XOR_1
+		Port ( A : in  STD_LOGIC;
+           B : in  STD_LOGIC;
+           C : inout  STD_LOGIC);
+end COMPONENT;
+component XOR_2
+		Port ( A : in  STD_LOGIC;
+           B : in  STD_LOGIC;
+           C : out  STD_LOGIC);
+end COMPONENT;
+
+
+component OR_1
+		Port ( A : in  STD_LOGIC;
+           B : in  STD_LOGIC;
+           C : out  STD_LOGIC);
+end COMPONENT;
+
+
+begin
+
+	U1 : AND_1 PORT MAP (A,B,G);
+	U2 : AND_2 PORT MAP (P,Cin,Q);
+	U3 : XOR_1 PORT MAP (A,B,P);
+	U4 : XOR_2 PORT MAP (P,Cin,Z);
+	U5 : OR_1 PORT MAP (Q,G,Cout);
+
+end Behavioral;
+

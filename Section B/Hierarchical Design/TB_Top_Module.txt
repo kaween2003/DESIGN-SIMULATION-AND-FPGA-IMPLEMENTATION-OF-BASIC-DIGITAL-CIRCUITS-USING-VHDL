@@ -1,0 +1,131 @@
+--------------------------------------------------------------------------------
+-- Company: 
+-- Engineer:
+--
+-- Create Date:   07:15:45 05/30/2026
+-- Design Name:   
+-- Module Name:   /home/ise/Xilinx_Shared/LAB_1/Hierarchical_Design/TB_TOP_MODULE.vhd
+-- Project Name:  Hierarchical_Design
+-- Target Device:  
+-- Tool versions:  
+-- Description:   
+-- 
+-- VHDL Test Bench Created by ISE for module: TOP_MODULE
+-- 
+-- Dependencies:
+-- 
+-- Revision:
+-- Revision 0.01 - File Created
+-- Additional Comments:
+--
+-- Notes: 
+-- This testbench has been automatically generated using types std_logic and
+-- std_logic_vector for the ports of the unit under test.  Xilinx recommends
+-- that these types always be used for the top-level I/O of a design in order
+-- to guarantee that the testbench will bind correctly to the post-implementation 
+-- simulation model.
+--------------------------------------------------------------------------------
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+ 
+-- Uncomment the following library declaration if using
+-- arithmetic functions with Signed or Unsigned values
+--USE ieee.numeric_std.ALL;
+ 
+ENTITY TB_TOP_MODULE IS
+END TB_TOP_MODULE;
+ 
+ARCHITECTURE behavior OF TB_TOP_MODULE IS 
+ 
+    -- Component Declaration for the Unit Under Test (UUT)
+ 
+    COMPONENT TOP_MODULE
+    PORT(
+         a : IN  std_logic_vector(7 downto 0);
+         b : IN  std_logic_vector(7 downto 0);
+         Y1 : OUT  std_logic_vector(15 downto 0);
+         Y2 : OUT  std_logic_vector(7 downto 0)
+        );
+    END COMPONENT;
+    
+
+   --Inputs
+   signal a : std_logic_vector(7 downto 0) := (others => '0');
+   signal b : std_logic_vector(7 downto 0) := (others => '0');
+
+ 	--Outputs
+   signal Y1 : std_logic_vector(15 downto 0);
+   signal Y2 : std_logic_vector(7 downto 0);
+   -- No clocks detected in port list. Replace <clock> below with 
+   -- appropriate port name 
+ 
+   --constant <clock>_period : time := 10 ns;
+ 
+BEGIN
+ 
+	-- Instantiate the Unit Under Test (UUT)
+   uut: TOP_MODULE PORT MAP (
+          a => a,
+          b => b,
+          Y1 => Y1,
+          Y2 => Y2
+        );
+
+   -- Clock process definitions
+--   <clock>_process :process
+--   begin
+--		<clock> <= '0';
+--		wait for <clock>_period/2;
+--		<clock> <= '1';
+--		wait for <clock>_period/2;
+--   end process;
+ 
+
+   -- Stimulus process
+   stim_proc: process
+   begin		
+
+		      -- Test case 1: a = 3, b = 5
+      -- a < b
+      -- Y1 = a * b = 15  = 0000000000001111
+      -- Y2 = a + b = 8   = 00001000
+      a <= "00000011";
+      b <= "00000101";
+      wait for 20 ns;
+
+      -- Test case 2: a = 8, b = 4
+      -- a > b
+      -- Y1 = a - 1 = 7   = 0000000000000111
+      -- Y2 = b + 1 = 5   = 00000101
+      a <= "00001000";
+      b <= "00000100";
+      wait for 20 ns;
+
+      -- Test case 3: a = 7, b = 7
+      -- a = b, so else part
+      -- Y1 = a - 1 = 6   = 0000000000000110
+      -- Y2 = b + 1 = 8   = 00001000
+      a <= "00000111";
+      b <= "00000111";
+      wait for 20 ns;
+
+      -- Test case 4: a = 2, b = 10
+      -- a < b
+      -- Y1 = a * b = 20  = 0000000000010100
+      -- Y2 = a + b = 12  = 00001100
+      a <= "00000010";
+      b <= "00001010";
+      wait for 20 ns;
+
+      -- Test case 5: a = 15, b = 3
+      -- a > b
+      -- Y1 = a - 1 = 14  = 0000000000001110
+      -- Y2 = b + 1 = 4   = 00000100
+      a <= "00001111";
+      b <= "00000011";
+      wait for 20 ns;
+
+      wait;
+   end process;
+
+END;

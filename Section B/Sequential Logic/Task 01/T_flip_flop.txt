@@ -1,0 +1,90 @@
+----------------------------------------------------------------------------------
+-- Company: 
+-- Engineer: 
+-- 
+-- Create Date:    15:29:00 05/29/2026 
+-- Design Name: 
+-- Module Name:    T_flip_flop - Behavioral 
+-- Project Name: 
+-- Target Devices: 
+-- Tool versions: 
+-- Description: 
+--
+-- Dependencies: 
+--
+-- Revision: 
+-- Revision 0.01 - File Created
+-- Additional Comments: 
+--
+----------------------------------------------------------------------------------
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+-- Uncomment the following library declaration if using
+-- arithmetic functions with Signed or Unsigned values
+--use IEEE.NUMERIC_STD.ALL;
+
+-- Uncomment the following library declaration if instantiating
+-- any Xilinx primitives in this code.
+--library UNISIM;
+--use UNISIM.VComponents.all;
+
+entity T_flip_flop is
+    Port (
+        T     : in  STD_LOGIC;
+        CLK   : in  STD_LOGIC;
+        Q     : out STD_LOGIC;
+        Q_bar : out STD_LOGIC
+    );
+end T_flip_flop;
+
+architecture Structural of T_flip_flop is
+
+    component D_ff
+        Port (
+            D     : in  STD_LOGIC;
+            CLK   : in  STD_LOGIC;
+            CLR   : in  STD_LOGIC;
+            Q     : out STD_LOGIC;
+            Q_bar : out STD_LOGIC
+        );
+    end component;
+
+    component XOR_1
+        Port (
+            A : in  STD_LOGIC;
+            B : in  STD_LOGIC;
+            C : inout STD_LOGIC
+        );
+    end component;
+
+    signal D_in      : STD_LOGIC;
+    signal Q_int     : STD_LOGIC;
+    signal Q_bar_int : STD_LOGIC;
+    signal CLR_const : STD_LOGIC := '1';
+
+begin
+
+    -- XOR gate: D = T XOR Q
+    U1 : XOR_1
+        port map (
+            A => T,
+            B => Q_int,
+            C => D_in
+        );
+
+    -- D Flip-Flop
+    U2 : D_ff
+        port map (
+            D     => D_in,
+            CLK   => CLK,
+            CLR   => CLR_const,
+            Q     => Q_int,
+            Q_bar => Q_bar_int
+        );
+
+    -- Output connection
+    Q     <= Q_int;
+    Q_bar <= Q_bar_int;
+
+end Structural;

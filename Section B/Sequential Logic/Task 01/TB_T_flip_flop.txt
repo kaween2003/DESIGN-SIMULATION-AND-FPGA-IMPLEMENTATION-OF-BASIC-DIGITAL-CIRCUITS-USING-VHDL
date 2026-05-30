@@ -1,0 +1,110 @@
+--------------------------------------------------------------------------------
+-- Company: 
+-- Engineer:
+--
+-- Create Date:   15:44:52 05/29/2026
+-- Design Name:   
+-- Module Name:   /home/ise/Xilinx_Shared/LAB_1/T_ff/TB_T_flip_flop.vhd
+-- Project Name:  T_ff
+-- Target Device:  
+-- Tool versions:  
+-- Description:   
+-- 
+-- VHDL Test Bench Created by ISE for module: T_flip_flop
+-- 
+-- Dependencies:
+-- 
+-- Revision:
+-- Revision 0.01 - File Created
+-- Additional Comments:
+--
+-- Notes: 
+-- This testbench has been automatically generated using types std_logic and
+-- std_logic_vector for the ports of the unit under test.  Xilinx recommends
+-- that these types always be used for the top-level I/O of a design in order
+-- to guarantee that the testbench will bind correctly to the post-implementation 
+-- simulation model.
+--------------------------------------------------------------------------------
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+ 
+-- Uncomment the following library declaration if using
+-- arithmetic functions with Signed or Unsigned values
+--USE ieee.numeric_std.ALL;
+ 
+ENTITY TB_T_flip_flop IS
+END TB_T_flip_flop;
+ 
+ARCHITECTURE behavior OF TB_T_flip_flop IS 
+ 
+    -- Component Declaration for the Unit Under Test (UUT)
+ 
+    COMPONENT T_flip_flop
+    PORT(
+         T : IN  std_logic;
+         CLK : IN  std_logic;
+         Q : OUT  std_logic;
+         Q_bar : OUT  std_logic
+        );
+    END COMPONENT;
+    
+
+   --Inputs
+   signal T : std_logic := '0';
+   signal CLK : std_logic := '0';
+
+ 	--Outputs
+   signal Q : std_logic;
+   signal Q_bar : std_logic;
+
+   -- Clock period definitions
+   --constant CLK_period : time := 10 ns;
+ 
+BEGIN
+ 
+	-- Instantiate the Unit Under Test (UUT)
+   uut: T_flip_flop PORT MAP (
+          T => T,
+          CLK => CLK,
+          Q => Q,
+          Q_bar => Q_bar
+        );
+
+   -- Clock process definitions
+--   CLK_process :process
+--   begin
+--		CLK <= '0';
+--		wait for CLK_period/2;
+--		CLK <= '1';
+--		wait for CLK_period/2;
+--   end process;
+ 
+
+-- Stimulus process
+   stim_proc: process
+   begin		
+
+      -- Test 1: T = 0, Q should hold
+      T <= '0';
+      wait for 20 ns;
+
+      -- Test 2: T = 1, Q should toggle at every rising edge
+      T <= '1';
+      wait for 40 ns;
+
+      -- Test 3: T = 0, Q should hold again
+      T <= '0';
+      wait for 20 ns;
+
+      -- Test 4: T = 1, Q should toggle again
+      T <= '1';
+      wait for 40 ns;
+
+      -- Test 5: T = 0, Q should hold final value
+      T <= '0';
+      wait for 20 ns;
+
+      wait;
+   end process;
+
+END;

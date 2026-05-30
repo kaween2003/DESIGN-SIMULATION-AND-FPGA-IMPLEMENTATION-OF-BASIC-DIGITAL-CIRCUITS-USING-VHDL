@@ -1,0 +1,107 @@
+----------------------------------------------------------------------------------
+-- Company: 
+-- Engineer: 
+-- 
+-- Create Date:    16:08:42 05/29/2026 
+-- Design Name: 
+-- Module Name:    COUNTER - Behavioral 
+-- Project Name: 
+-- Target Devices: 
+-- Tool versions: 
+-- Description: 
+--
+-- Dependencies: 
+--
+-- Revision: 
+-- Revision 0.01 - File Created
+-- Additional Comments: 
+--
+----------------------------------------------------------------------------------
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+-- Uncomment the following library declaration if using
+-- arithmetic functions with Signed or Unsigned values
+--use IEEE.NUMERIC_STD.ALL;
+
+-- Uncomment the following library declaration if instantiating
+-- any Xilinx primitives in this code.
+--library UNISIM;
+--use UNISIM.VComponents.all;
+
+entity COUNTER is
+    Port ( T : in  STD_LOGIC;
+           CLK : in  STD_LOGIC;
+           CLR : in  STD_LOGIC;
+           Q0 : inout  STD_LOGIC;
+           Q1 : inout  STD_LOGIC;
+           Q2 : inout  STD_LOGIC;
+           Q : out  STD_LOGIC);
+end COUNTER;
+
+architecture Behavioral of COUNTER is
+
+component AND_1
+		Port ( A : in  STD_LOGIC;
+           B : in  STD_LOGIC;
+           C : out  STD_LOGIC);
+end COMPONENT;
+component AND_2
+		Port ( A : in  STD_LOGIC;
+           B : in  STD_LOGIC;
+           C : out  STD_LOGIC);
+end COMPONENT;
+component AND_3
+		Port ( A : in  STD_LOGIC;
+           B : in  STD_LOGIC;
+           C : out  STD_LOGIC);
+end COMPONENT;
+
+
+
+component T_FF_1
+		Port ( T : in  STD_LOGIC;
+           CLR : in  STD_LOGIC;
+           CLK : in  STD_LOGIC;
+           Q : out  STD_LOGIC;
+           Q_bar : out  STD_LOGIC);
+end COMPONENT;
+component T_FF_2
+		Port ( T : in  STD_LOGIC;
+           CLR : in  STD_LOGIC;
+           CLK : in  STD_LOGIC;
+           Q : out  STD_LOGIC;
+           Q_bar : out  STD_LOGIC);
+end COMPONENT;
+component T_FF_3
+		Port ( T : in  STD_LOGIC;
+           CLR : in  STD_LOGIC;
+           CLK : in  STD_LOGIC;
+           Q : out  STD_LOGIC;
+           Q_bar : out  STD_LOGIC);
+end COMPONENT;
+component T_FF_4
+		Port ( T : in  STD_LOGIC;
+           CLR : in  STD_LOGIC;
+           CLK : in  STD_LOGIC;
+           Q : out  STD_LOGIC;
+           Q_bar : out  STD_LOGIC);
+end COMPONENT;
+
+
+SIGNAL Q0_bar,Q1_bar,Q2_bar,Q3_bar,T1,T2,T3   :STD_LOGIC;
+
+begin
+
+
+		U1 : AND_1 PORT MAP (T,Q0,T1);
+		U2 : AND_2 PORT MAP (Q1,T1,T2);
+		U3 : AND_3 PORT MAP (Q2,T2,T3);
+		U4 : T_FF_1 PORT MAP (T,CLK,CLR,Q0,Q0_bar);
+		U5 : T_FF_2 PORT MAP (T1,CLK,CLR,Q1,Q1_bar);
+		U6 : T_FF_3 PORT MAP (T2,CLK,CLR,Q2,Q2_bar);
+		U7 : T_FF_4 PORT MAP (T3,CLK,CLR,Q,Q3_bar);
+
+
+end Behavioral;
+

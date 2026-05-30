@@ -1,0 +1,83 @@
+----------------------------------------------------------------------------------
+-- Company: 
+-- Engineer: 
+-- 
+-- Create Date:    17:53:55 05/28/2026 
+-- Design Name: 
+-- Module Name:    Mul_1 - Behavioral 
+-- Project Name: 
+-- Target Devices: 
+-- Tool versions: 
+-- Description: 
+--
+-- Dependencies: 
+--
+-- Revision: 
+-- Revision 0.01 - File Created
+-- Additional Comments: 
+--
+----------------------------------------------------------------------------------
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+-- Uncomment the following library declaration if using
+-- arithmetic functions with Signed or Unsigned values
+--use IEEE.NUMERIC_STD.ALL;
+
+-- Uncomment the following library declaration if instantiating
+-- any Xilinx primitives in this code.
+--library UNISIM;
+--use UNISIM.VComponents.all;
+
+entity Mul_1 is
+    Port ( A : in  STD_LOGIC;
+           B : in  STD_LOGIC;
+           C : in  STD_LOGIC;
+           Y : out  STD_LOGIC);
+end Mul_1;
+
+architecture Behavioral of Mul_1 is
+
+
+
+
+component AND_1
+	Port ( A : in  STD_LOGIC;
+           B : in  STD_LOGIC;
+           C : out  STD_LOGIC);
+end COMPONENT;
+component AND_2
+	Port ( A : in  STD_LOGIC;
+           B : in  STD_LOGIC;
+           C : out  STD_LOGIC);
+end COMPONENT;
+
+
+
+component OR_1
+	Port ( A : in  STD_LOGIC;
+           B : in  STD_LOGIC;
+           C : out  STD_LOGIC);
+end COMPONENT;
+
+
+
+component NOT_1
+	Port ( A : in  STD_LOGIC;
+           C : out  STD_LOGIC);
+end COMPONENT;
+
+
+
+SIGNAL S1,S2,S3 : STD_LOGIC;
+
+begin
+
+	U1 : AND_1 PORT MAP(A,S1,S2);
+	U2 : AND_2 PORT MAP(B,C,S3);
+	U3 : OR_1 PORT MAP(S2,S3,Y);
+	U4 : NOT_1 PORT MAP(C,S1);
+
+
+end Behavioral;
+

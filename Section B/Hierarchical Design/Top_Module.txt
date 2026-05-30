@@ -1,0 +1,124 @@
+----------------------------------------------------------------------------------
+-- Company: 
+-- Engineer: 
+-- 
+-- Create Date:    05:41:56 05/30/2026 
+-- Design Name: 
+-- Module Name:    TOP_MODULE - Behavioral 
+-- Project Name: 
+-- Target Devices: 
+-- Tool versions: 
+-- Description: 
+--
+-- Dependencies: 
+--
+-- Revision: 
+-- Revision 0.01 - File Created
+-- Additional Comments: 
+--
+----------------------------------------------------------------------------------
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+-- Uncomment the following library declaration if using
+-- arithmetic functions with Signed or Unsigned values
+--use IEEE.NUMERIC_STD.ALL;
+
+-- Uncomment the following library declaration if instantiating
+-- any Xilinx primitives in this code.
+--library UNISIM;
+--use UNISIM.VComponents.all;
+
+entity TOP_MODULE is
+    Port ( a : in  STD_LOGIC_VECTOR (7 downto 0);
+           b : in  STD_LOGIC_VECTOR (7 downto 0);
+           Y1 : out  STD_LOGIC_VECTOR (15 downto 0);  -- c output
+           Y2 : out  STD_LOGIC_VECTOR (7 downto 0));  -- d output
+end TOP_MODULE;
+
+architecture Behavioral of TOP_MODULE is
+
+component Comparator
+	Port ( A : in  STD_LOGIC_VECTOR (7 downto 0);
+           B : in  STD_LOGIC_VECTOR (7 downto 0);
+           S : out STD_LOGIC);
+end COMPONENT;
+
+component Adder
+	Port ( A : in  STD_LOGIC_VECTOR (7 downto 0);
+           B : in  STD_LOGIC_VECTOR (7 downto 0);
+           Y : out  STD_LOGIC_VECTOR (7 downto 0));
+end COMPONENT;
+
+component Decrementor
+	Port ( A : in  STD_LOGIC_VECTOR (7 downto 0);
+           Y : out  STD_LOGIC_VECTOR (7 downto 0));
+end COMPONENT;
+
+component Incrementor
+	Port ( A : in  STD_LOGIC_VECTOR (7 downto 0);
+           Y : out  STD_LOGIC_VECTOR (7 downto 0));
+end COMPONENT;
+
+component Multiplexer_1
+	Port ( A : in  STD_LOGIC_VECTOR (15 downto 0);
+           B : in  STD_LOGIC_VECTOR (15 downto 0);
+           S : in  STD_LOGIC;
+           Y : out  STD_LOGIC_VECTOR (15 downto 0));
+end COMPONENT;
+
+component Multiplexer_2
+	Port ( A : in  STD_LOGIC_VECTOR (7 downto 0);
+           B : in  STD_LOGIC_VECTOR (7 downto 0);
+           S : in  STD_LOGIC;
+           Y : out  STD_LOGIC_VECTOR (7 downto 0));
+end COMPONENT;
+
+component Multiplier
+	Port ( A : in  STD_LOGIC_VECTOR (7 downto 0);
+           B : in  STD_LOGIC_VECTOR (7 downto 0);
+           Y : out  STD_LOGIC_VECTOR (15 downto 0));
+end COMPONENT;
+
+
+-- Internal signals 
+signal S1    : STD_LOGIC_VECTOR (15 downto 0); -- Multiplier output: a * b
+signal S2    : STD_LOGIC_VECTOR (7 downto 0);  -- Decrementor output: a - 1
+signal S3    : STD_LOGIC;                      -- Comparator output
+signal S4    : STD_LOGIC_VECTOR (7 downto 0);  -- Incrementor output: b + 1
+signal S5    : STD_LOGIC_VECTOR (7 downto 0);  -- Adder output: a + b
+
+signal S2_16 : STD_LOGIC_VECTOR (15 downto 0); -- 16-bit version of S2
+
+begin
+
+    -- S1 = a * b
+    U1 : Multiplier PORT MAP (a,b,S1);
+
+    -- S2 = a - 1
+    U2 : Decrementor PORT MAP (a,S2);
+
+    -- S3 = 1 if a < b, else 0
+    U3 : Comparator PORT MAP (a,b,S3); 
+	 
+	 -- S4 = b + 1
+    U4 : Incrementor PORT MAP (b,S4); 
+	 
+	 -- S5 = a + b
+    U5 : Adder PORT MAP (a,b,S5);  
+
+
+    -- Convert S2 from 8-bit to 16-bit
+    S2_16 <= "00000000" & S2;
+	 
+																	-- Y1 = c
+	 U6 : Multiplexer_1 PORT MAP (S2_16,S1,S3,Y1);  -- if a < b, Y1 = a * b
+																	-- else, Y1 = a - 1
+
+																 -- Y2 = d
+	 U7 : Multiplexer_2 PORT MAP (S4,S5,S3,Y2);	 -- if a < b, Y2 = a + b
+																 -- else, Y2 = b + 1
+	 
+
+end Behavioral;
+
